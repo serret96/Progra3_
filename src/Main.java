@@ -32,7 +32,7 @@ public class Main {
     public static void llegirFitxers(LlistaCompres llistaCompres, LlistaProductes llistaProductes) throws FileNotFoundException, ParseException {
 
         Scanner sc =new Scanner(new File("C:\\Users\\serret96\\Desktop\\Progra\\practica3\\Progra3\\Progra3\\src\\compres.txt"));
-        String [] linea = new String[9];
+        String [] linea = new String[8];
         int codi, quant, cost;
         Date date;
         Compres[] llistac;
@@ -69,17 +69,27 @@ public class Main {
             //codi = linea[5];
 
 
-            Productes p = new Productes(nomp, nif, nomv, lat, lon, linea[5]);
+            Productes p = new Productes(nomp, nif, nomv, lat, lon, linea[6]);
             String [] linea2 = new String[3];
             linea2 = linea[6].split("_");
             if (linea2[0].equals("UT"))
             {
+                int preu = Integer.parseInt(linea[5]);
+                int pes = Integer.parseInt(linea[7]);
+                int stock = Integer.parseInt(linea[8]);
+
+                Productes_Unitat productes_unitat = new Productes_Unitat(nomp, nif, nomv, lat, lon, linea[6], preu, pes, stock);
                 System.out.println("Es aqui");
             }
             else
             {
-                System.out.println(linea[6]);
+                int preu = Integer.parseInt(linea[5]);
+                Boolean celiac = Boolean.parseBoolean(linea[7]);
+                int stock = Integer.parseInt(linea[8]);
+                Productes_Granel productes_granel = new Productes_Granel(nomp, nif, nomv, lat, lon, linea[6], preu, celiac, stock);
             }
+
+
 
 
             //llistaProductes.nouProducte();
