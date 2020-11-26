@@ -79,7 +79,7 @@ public class Main {
                 int stock = Integer.parseInt(linea[8]);
 
                 Productes_Unitat productes_unitat = new Productes_Unitat(nomp, nif, nomv, lat, lon, linea[6], preu, pes, stock);
-                System.out.println("Es aqui");
+                llistaProductes.nouProducte(productes_unitat);
             }
             else
             {
@@ -87,7 +87,11 @@ public class Main {
                 Boolean celiac = Boolean.parseBoolean(linea[7]);
                 int stock = Integer.parseInt(linea[8]);
                 Productes_Granel productes_granel = new Productes_Granel(nomp, nif, nomv, lat, lon, linea[6], preu, celiac, stock);
+                llistaProductes.nouProducte(productes_granel);
+
             }
+
+
 
 
 
