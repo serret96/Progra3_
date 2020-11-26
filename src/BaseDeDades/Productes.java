@@ -2,13 +2,13 @@ package BaseDeDades;
 
 public class Productes {
 	private String nom_producte;
-	private int nif;
+	private String nif;
 	private String nom_venedor;
 	private double lat;
 	private double lon;
-	private int codi;
+	private String codi;
 	
-	public Productes (String nomp, int nifv, String nomv, double latitud, double longitud, int codit) {
+	public Productes (String nomp, String nifv, String nomv, double latitud, double longitud, String codit) {
 		this.nom_producte = nomp;
 		this.nif = nifv;
 		this.nom_venedor = nomv;
@@ -22,7 +22,7 @@ public class Productes {
 		return nom_producte;
 	}
 	
-	public int getNif() {
+	public String getNif() {
 		return nif;
 	}
 	
@@ -38,7 +38,7 @@ public class Productes {
 		return lon;
 	}
 	
-	public int getCodi() {
+	public String getCodi() {
 		return codi;
 	}
 	

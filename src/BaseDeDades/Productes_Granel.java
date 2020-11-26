@@ -7,7 +7,7 @@ public class Productes_Granel extends Productes {
 	private Boolean celiac;
 	private int stockg;
 	
-	public Productes_Granel  (String nomp, int nifv, String nomv, double latitud, double longitud, int codit, int p, Boolean c, int stock) {
+	public Productes_Granel  (String nomp, String nifv, String nomv, double latitud, double longitud, String codit, int p, Boolean c, int stock) {
 		super(nomp, nifv, nomv, latitud, longitud, codit);
 		this.preu = p;
 		this.codi_car = "GR_";

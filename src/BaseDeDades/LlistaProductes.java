@@ -56,10 +56,10 @@ public class LlistaProductes {
 	 * @param num, informacio del productor
 	 */
 	
-	public void eliminaProducte (int num) {
+	public void eliminaProducte (String num) {
 
 		for (int i=0; i<nProductes; i++) {
-			if ((llistap[i].getNif()) == num){
+			if (llistap[i].getNif().equals(num)){
 				for (int pos = i; pos<nProductes; pos++) {
 					llistap[pos] = llistap [pos+1];
 				}
@@ -97,12 +97,12 @@ public class LlistaProductes {
 	 * @return aux es tracta de la llista amb les dades seleccionades
 	 */
 	
-	public LlistaProductes productesMateix_productor (int nif) {
+	public LlistaProductes productesMateix_productor (String nif) {
 		Productes[] llista_aux;
 		llista_aux = new Productes [nProductes];
 		int nproductes = 0;
 		for (int i=0; i<nProductes; i++) {
-			if (llistap[i].getNif() == nif){
+			if (llistap[i].getNif().equals(nif)){
 				llista_aux[nproductes]=llistap[i];
 				nproductes++;
 			}

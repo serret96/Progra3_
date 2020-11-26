@@ -1,4 +1,11 @@
+import BaseDeDades.*;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Scanner;
 
 public class Main {
 
@@ -22,14 +29,80 @@ public class Main {
         return distancia;  
     }
 
-    public static void main(String[] args) {
+    public static void llegirFitxers(LlistaCompres llistaCompres, LlistaProductes llistaProductes) throws FileNotFoundException, ParseException {
+
+        Scanner sc =new Scanner(new File("C:\\Users\\serret96\\Desktop\\Progra\\practica3\\Progra3\\Progra3\\src\\compres.txt"));
+        String [] linea = new String[9];
+        int codi, quant, cost;
+        Date date;
+        Compres[] llistac;
+
+        int i = 0;
+
+        while(sc.hasNextLine())
+        {
+            linea =sc.nextLine().split(";");
+
+            codi = Integer.parseInt(linea[0]);
+            quant = Integer.parseInt(linea[1]);
+            date = new SimpleDateFormat("dd/MM/yyyy").parse(linea[2]);
+            cost = Integer.parseInt(linea[3]);
+
+            Compres c = new Compres(codi, quant, date, cost);
+
+            llistaCompres.nouCompra(c);
+
+            i++;
+        }
+        sc.close();
+
+        Scanner sc2 =new Scanner(new File("C:\\Users\\serret96\\Desktop\\Progra\\practica3\\Progra3\\Progra3\\src\\productes.txt"));
+
+        while(sc2.hasNextLine())
+        {
+            linea =sc2.nextLine().split(";");
+            String nomp = linea[0];
+            String nif = linea[1];
+            String nomv = linea[2];
+            double lat = Double.parseDouble(linea[3]);
+            double lon = Double.parseDouble(linea[4]);
+            //codi = linea[5];
 
 
-        System.out.println("Les coordenades del client seran per defecte");
+            Productes p = new Productes(nomp, nif, nomv, lat, lon, linea[5]);
+            String [] linea2 = new String[3];
+            linea2 = linea[6].split("_");
+            if (linea2[0].equals("UT"))
+            {
+                System.out.println("Es aqui");
+            }
+            else
+            {
+                System.out.println(linea[6]);
+            }
 
 
+            //llistaProductes.nouProducte();
+
+        }
+        sc2.close();
 
 
     }
-	
+
+    public static void main(String[] args) throws FileNotFoundException, ParseException {
+
+
+        System.out.println("Les coordenades del client seran per defecte");
+        LlistaCompres llistaCompres = new LlistaCompres(10);
+        LlistaProductes llistaProductes = new LlistaProductes(10);
+        llegirFitxers(llistaCompres, llistaProductes);
+
+
+
+        //Compres c = new Compres();
+
+
+    }
+
 }

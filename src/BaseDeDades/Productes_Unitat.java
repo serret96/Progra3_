@@ -7,7 +7,7 @@ public class Productes_Unitat extends Productes {
 	private String codi_car;
 	private int preukg;
 	
-	public Productes_Unitat  (String nomp, int nifv, String nomv, double latitud, double longitud, int codit, int p, int pkg, int stock) {
+	public Productes_Unitat  (String nomp, String nifv, String nomv, double latitud, double longitud, String codit, int p, int pkg, int stock) {
 		super(nomp, nifv, nomv, latitud, longitud, codit);
 		this.preu = p;
 		this.codi_car = "UT_";
