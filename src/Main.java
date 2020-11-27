@@ -2,6 +2,7 @@ import BaseDeDades.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -91,15 +92,50 @@ public class Main {
 
             }
 
-
-
-
-
-
-            //llistaProductes.nouProducte();
-
         }
         sc2.close();
+
+
+    }
+
+    public static  void EscriureFitxers(LlistaCompres llistaCompres, LlistaProductes llistaProductes) throws FileNotFoundException {
+
+        PrintWriter pw = new PrintWriter(new File("compres.txt"));
+
+        Compres []c = new Compres[llistaCompres.getnCompres()];
+        c = llistaCompres.getLlista();
+        Compres c1;
+        for (int i = 0; i < llistaCompres.getnCompres(); i++)
+        {
+            c1 = c[i];
+            pw.write(c1.getCodip()+";"+c1.getData()+";"+c1.getQuantitat()+";"+c1.getCost()+"\n");
+        }
+        pw.close();
+
+        PrintWriter pw2 = new PrintWriter(new File("compres.txt"));
+
+        Productes []p = new Productes[llistaProductes.getnProductes()];
+        p = llistaProductes.getLlista();
+        Productes p1;
+        for (int i = 0; i < llistaProductes.getnProductes(); i++)
+        {
+            p1 = p[i];
+
+            String [] linea2 = new String[3];
+            linea2 = p1.getCodi().split("_");
+            if (linea2[0].equals("UT"))
+            {
+                Productes_Unitat pu = (Productes_Unitat) p[i];
+
+            }
+            else
+            {
+                Productes_Granel pg = (Productes_Granel) p[i];
+            }
+        }
+        pw.close();
+
+
 
 
     }

@@ -18,7 +18,19 @@ public class Compres {
 	public int getCodip() {
 		return codip;
 	}
-	
+
+	public int getQuantitat() {
+		return quantitat;
+	}
+
+	public Date getData() {
+		return data;
+	}
+
+	public int getCost() {
+		return cost;
+	}
+
 	public Compres copia() {
 		Compres p = new Compres (this.codip, this.quantitat, this.data, this.cost);
 		return p;
