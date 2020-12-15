@@ -14,8 +14,16 @@ public class Productes_Granel extends Productes {
 		this.celiac = c;
 		this.stockg = stock;
 	}
-		
-		public void setPreuG (int p) {
+
+	public int getPreu() {
+		return preu;
+	}
+
+	public int getStockg() {
+		return stockg;
+	}
+
+	public void setPreuG (int p) {
 			this.preu = p;
 		}
 		

@@ -39,14 +39,14 @@ public class LlistaProductes {
 
 		while (i < nProductes && !trobat) {
 			if (llistap[i].getCodi() == (p.getCodi())) {
-				llistap[i] = p.copia();
+				llistap[i] = p;
 				trobat = true;
 			}
 			i++;
 		}
 
 		if (!trobat && nProductes < llistap.length) {
-			llistap[nProductes] = p.copia();
+			llistap[nProductes] = p;
 			nProductes++;
 		}
 	}

@@ -1,1 +1,3 @@
 Aigua de Valencia;11111111A;Rodolfo Martinez;150;20;15;UT_10;2;200
+Pipas;11111111A;Rodolfo Martinez;150;20;15;GR_10;TRUE;200
+Pipas G;11111111B;Eustaqui;150;20;15;GR_12;FALSE;200

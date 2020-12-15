@@ -7,8 +7,9 @@ public class Productes {
 	private double lat;
 	private double lon;
 	private String codi;
-	
-	public Productes (String nomp, String nifv, String nomv, double latitud, double longitud, String codit) {
+
+	public Productes(String nomp, String nifv, String nomv, double latitud, double longitud, String codit) {
+		super();
 		this.nom_producte = nomp;
 		this.nif = nifv;
 		this.nom_venedor = nomv;
@@ -16,7 +17,28 @@ public class Productes {
 		this.lon = longitud;
 		this.codi = codit;
 	}
-	
+
+	public Productes(String nom, String nif, String productor, double lat, double longi, String codi, int preu, int preukg, int stock) {
+		super();
+		this.nom_producte = nom;
+		this.nif = nif;
+		this.nom_venedor = productor;
+		this.lat = lat;
+		this.lon = longi;
+		this.codi = codi;
+	}
+
+	public Productes(String nom, String nif, String productor, double lat, double longi, String codi, int preu, boolean control, int stock) {
+		super();
+		this.nom_producte = nom;
+		this.nif = nif;
+		this.nom_venedor = productor;
+		this.lat = lat;
+		this.lon = longi;
+		this.codi = codi;
+	}
+
+
 	// Getters dels diferents atributs/**
 	public String getNom_producte() {
 		return nom_producte;

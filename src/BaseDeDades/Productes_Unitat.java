@@ -1,6 +1,6 @@
 package BaseDeDades;
 
-public class Productes_Unitat extends Productes {
+public class Productes_Unitat extends Productes  {
 	
 	private int preu;
 	private int stocku;
@@ -14,8 +14,31 @@ public class Productes_Unitat extends Productes {
 		this.preukg = pkg;
 		this.stocku = stock;
 	}
-	
-	
+
+	public int getPreu() {
+		return preu;
+	}
+
+	public void setPreu(int preu) {
+		this.preu = preu;
+	}
+
+	public int getStocku() {
+		return stocku;
+	}
+
+	public void setStocku(int stocku) {
+		this.stocku = stocku;
+	}
+
+	public int getPreukg() {
+		return preukg;
+	}
+
+	public void setPreukg(int preukg) {
+		this.preukg = preukg;
+	}
+
 	public void setPreuU (int p) {
 		this.preu = p;
 	}
