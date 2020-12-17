@@ -57,15 +57,17 @@ public class LlistaProductes {
 	 */
 	
 	public void eliminaProducte (String num) {
-
+		int j = 0;
 		for (int i=0; i<nProductes; i++) {
 			if (llistap[i].getNif().equals(num)){
 				for (int pos = i; pos<nProductes; pos++) {
 					llistap[pos] = llistap [pos+1];
 				}
 				nProductes--;
+				i--;
 			}
-		}	
+		}
+
 	}
 	
 	/**

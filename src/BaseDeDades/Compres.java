@@ -3,19 +3,19 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 
 public class Compres {
-	private int codip;
+	private String codip;
 	private int quantitat;
 	private Date data;
 	private int cost;
 	
-	public Compres (int c, int q, Date d, int coste) {
+	public Compres (String c, int q, Date d, int coste) {
 		this.codip = c;
 		this.quantitat = q;
 		this.data = d;
 		this.cost = coste;
 	}
 	
-	public int getCodip() {
+	public String getCodip() {
 		return codip;
 	}
 

@@ -21,5 +21,12 @@ public class Client {
 	public double getLonc() {
 		return lonc;
 	}
-		
+
+	public void setLatc(double latc) {
+		this.latc = latc;
+	}
+
+	public void setLonc(double lonc) {
+		this.lonc = lonc;
+	}
 }

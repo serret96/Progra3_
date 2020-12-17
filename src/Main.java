@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -34,7 +35,8 @@ public class Main {
 
         Scanner sc =new Scanner(new File("C:\\Users\\serret96\\Desktop\\Progra\\practica3\\Progra3\\Progra3\\src\\compres.txt"));
         String [] linea = new String[8];
-        int codi, quant, cost;
+        String codi;
+        int  quant, cost;
         Date date;
         Compres[] llistac;
 
@@ -44,7 +46,7 @@ public class Main {
         {
             linea =sc.nextLine().split(";");
 
-            codi = Integer.parseInt(linea[0]);
+            codi = linea[0];
             quant = Integer.parseInt(linea[1]);
             date = new SimpleDateFormat("dd/MM/yyyy").parse(linea[2]);
             cost = Integer.parseInt(linea[3]);
@@ -238,6 +240,16 @@ public class Main {
         return productes;
     }
 
+    public static String llegirNif()
+    {
+        String nif;
+        System.out.println("Introdueix el NIF del productor: ");
+        Scanner sc = new Scanner(System.in);
+        nif = sc.nextLine();
+
+        return nif;
+    }
+
     public static void main(String[] args) throws FileNotFoundException, ParseException {
 
 
@@ -245,11 +257,7 @@ public class Main {
         LlistaCompres llistaCompres = new LlistaCompres(10);
         LlistaProductes llistaProductes = new LlistaProductes(10);
         llegirFitxers(llistaCompres, llistaProductes);
-        Productes [] llistaa = llistaProductes.getLlista();
-        Productes u =  llistaa[0];
-        Productes_Unitat uni;
-        System.out.println("prova");
-
+        Client client = new Client(0, 0);
 
         Scanner sn = new Scanner(System.in);
         boolean salir = false;
@@ -295,21 +303,31 @@ public class Main {
                     break;
                 case 5:
                     System.out.println("Has seleccionado la opcion 5");
+                    String nif;
+                    nif = llegirNif();
+                    llistaProductes.eliminaProducte(nif);
                     break;
                 case 6:
                     System.out.println("Has seleccionado la opcion 6");
+                    System.out.println("Modificar estoc o preu d'un producte");
+                    modificarProducte(llistaProductes);
                     break;
                 case 7:
                     System.out.println("Has seleccionado la opcion 7");
+                    visualitzarCompres(llistaCompres);
                     break;
                 case 8:
                     System.out.println("Has seleccionado la opcion 8");
+                    System.out.println("Modifiquem la ubicacio del client: ");
+                    modificarUbicacio(client);
                     break;
                 case 9:
                     System.out.println("Has seleccionado la opcion 9");
+                    productesProxims(llistaProductes);
                     break;
                 case 10:
                     System.out.println("Has seleccionado la opcion 10");
+                    novaCompra(llistaCompres, llistaProductes);
                     break;
                 case 11:
                     EscriureFitxers(llistaCompres, llistaProductes);
@@ -321,6 +339,135 @@ public class Main {
 
         }
 
+    }
+
+    private static void productesProxims(LlistaProductes llistaProductes) {
+
+	    Scanner scanner = new Scanner(System.in);
+
+        System.out.println("introdueix les dues coordenades: ");
+        double lat = scanner.nextDouble();
+        double longi = scanner.nextDouble();
+        int producte = 0;
+
+        System.out.println("introdueix el producte: ");
+        String codi = scanner.nextLine();
+        Productes[] llista = llistaProductes.getLlista();
+        for (int i = 0; i < llistaProductes.getnProductes(); i++) {
+
+            if (codi.equals(llista[i].getCodi()))
+            {
+                producte = i;
+            }
+        }
+        double distancia = distanciaCoord(lat, longi, llista[producte].getLat(), llista[producte].getLon());
+        System.out.println("la distancia entre els dos elemetns es: "+ distancia);
+    }
+
+    private static void novaCompra(LlistaCompres llistaCompres, LlistaProductes llistaProductes) {
+
+	    Scanner scanner = new Scanner(System.in);
+
+        System.out.println("introdueix el codi del producte");
+	    String codi = scanner.nextLine();
+        System.out.println("introdueix la cantitad de element que vols del producte");
+	    int quantitat = scanner.nextInt();
+	    Date date = new Date();
+
+        int cost = 0;
+        Productes [] llista = llistaProductes.getLlista();
+        int producte = 0;
+        for (int i = 0; i < llistaProductes.getnProductes(); i++) {
+            if (codi.equals(llista[i].getCodi()))
+            {
+                producte = i;
+            }
+        }
+
+        String [] linea = codi.split("_");
+        if (linea[0].equals("UT"))
+        {
+            cost = quantitat *  ((Productes_Unitat) llista[producte]).getPreukg();
+        }
+        else
+        {
+            cost = quantitat *  ((Productes_Granel) llista[producte]).getPreu();
+        }
+        Compres compres = new Compres(codi, quantitat, date, cost);
+        llistaCompres.nouCompra(compres);
+    }
+
+    private static void modificarProducte(LlistaProductes llistaProductes) {
+	    Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Quin producte vols modificar (Insereix el codi)");
+        String codi = scanner.nextLine();
+        Productes [] llista = llistaProductes.getLlista();
+        int preu, estoc;
+        int producte = 0;
+        for (int i = 0; i < llistaProductes.getnProductes(); i++) {
+            if (llista[i].getCodi().equals(codi))
+            {
+                producte = i;
+            }
+        }
+        codi = llista[producte].getCodi();
+        String [] linea = codi.split("_");
+        if (linea[0].equals("UT"))
+        {
+            Productes_Unitat ut = (Productes_Unitat) llista[producte];
+            System.out.println("Preu kg actual: "+ ut.getPreukg());
+            System.out.println("Preu estoc: "+ ut.getStocku()+ "en Unitats\n");
+
+            System.out.println("Introdueix nou preu:");
+            preu = scanner.nextInt();
+            System.out.println("Introdueix nou estoc:");
+            estoc = scanner.nextInt();
+            ut.setPreu(preu);
+            ut.setStockU(estoc);
+            llista[producte] = ut;
+        }
+        else
+        {
+            Productes_Granel gr = (Productes_Granel) llista[producte];
+            System.out.println("Preu acutal: "+ gr.getPreu());
+            System.out.println("Estoc acutal: "+ gr.getStockg()+ "en kg \n");
+            System.out.println("Introdueix nou preu:");
+            preu = scanner.nextInt();
+            System.out.println("Introdueix nou estoc:");
+            estoc = scanner.nextInt();
+            gr.setPreuG(preu);
+            gr.setStock(estoc);
+            llista[producte] = gr;
+        }
+
+        llistaProductes.setLlista(llista);
+    }
+
+    private static void visualitzarCompres(LlistaCompres llistaCompres) {
+        Compres [] llista;
+        llista = llistaCompres.getLlista();
+
+        for (int i = 0; i < llista.length; i++) {
+            System.out.println("Compra "+ i);
+            System.out.println("Codi: "+ llista[i].getCodip());
+            System.out.println("cost: "+ llista[i].getCost());
+            System.out.println("Codi: "+ llista[i].getQuantitat());
+            System.out.println("Codi: "+ llista[i].getData()+ "\n");
+        }
+
+    }
+
+    private static void modificarUbicacio(Client client) {
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Latitud:");
+        double lat = scanner.nextDouble();
+        System.out.println("Longitud:");
+        double longi = scanner.nextDouble();
+
+        client.setLatc(lat);
+        client.setLonc(longi);
     }
 
 }
