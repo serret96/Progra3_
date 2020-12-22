@@ -59,7 +59,8 @@ public class LlistaProductes {
 	public void eliminaProducte (String num) {
 		int j = 0;
 		for (int i=0; i<nProductes; i++) {
-			if (llistap[i].getNif().equals(num)){
+			Productor productor = llistap[i].getProductor();
+			if (productor.getNif().equals(num)){
 				for (int pos = i; pos<nProductes; pos++) {
 					llistap[pos] = llistap [pos+1];
 				}
@@ -104,7 +105,9 @@ public class LlistaProductes {
 		llista_aux = new Productes [nProductes];
 		int nproductes = 0;
 		for (int i=0; i<nProductes; i++) {
-			if (llistap[i].getNif().equals(nif)){
+			Productor productor = llistap[i].getProductor();
+
+			if (productor.getNif().equals(nif)){
 				llista_aux[nproductes]=llistap[i];
 				nproductes++;
 			}

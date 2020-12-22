@@ -7,12 +7,14 @@ public class Compres {
 	private int quantitat;
 	private Date data;
 	private int cost;
+	private Productes productes;
 	
-	public Compres (String c, int q, Date d, int coste) {
+	public Compres (String c, int q, Date d, int coste, Productes  productes) {
 		this.codip = c;
 		this.quantitat = q;
 		this.data = d;
 		this.cost = coste;
+		this.productes = productes;
 	}
 	
 	public String getCodip() {
@@ -32,7 +34,7 @@ public class Compres {
 	}
 
 	public Compres copia() {
-		Compres p = new Compres (this.codip, this.quantitat, this.data, this.cost);
+		Compres p = new Compres (this.codip, this.quantitat, this.data, this.cost, this.productes);
 		return p;
 	}
 }

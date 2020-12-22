@@ -2,56 +2,54 @@ package BaseDeDades;
 
 public class Productes {
 	private String nom_producte;
-	private String nif;
-	private String nom_venedor;
+	private Productor productor;
 	private double lat;
 	private double lon;
 	private String codi;
+	private float stock;
 
-	public Productes(String nomp, String nifv, String nomv, double latitud, double longitud, String codit) {
+	public Productes(String nomp, Productor productor, double latitud, double longitud, String codit, float stock) {
 		super();
 		this.nom_producte = nomp;
-		this.nif = nifv;
-		this.nom_venedor = nomv;
+		this.productor = productor;
 		this.lat = latitud;
 		this.lon = longitud;
 		this.codi = codit;
+		this.stock = stock;
 	}
 
-	public Productes(String nom, String nif, String productor, double lat, double longi, String codi, int preu, int preukg, int stock) {
+	public Productes(String nom, Productor productor, double lat, double longi, String codi, int preu, int preukg, float stock) {
 		super();
 		this.nom_producte = nom;
-		this.nif = nif;
-		this.nom_venedor = productor;
+		this.productor = productor;
 		this.lat = lat;
 		this.lon = longi;
 		this.codi = codi;
+		this.stock = stock;
 	}
 
-	public Productes(String nom, String nif, String productor, double lat, double longi, String codi, int preu, boolean control, int stock) {
+	public Productes(String nom, Productor productor, double lat, double longi, String codi, int preu, boolean control, float stock) {
 		super();
 		this.nom_producte = nom;
-		this.nif = nif;
-		this.nom_venedor = productor;
+		this.productor = productor;
 		this.lat = lat;
 		this.lon = longi;
 		this.codi = codi;
+		this.stock = stock;
 	}
 
-
-	// Getters dels diferents atributs/**
 	public String getNom_producte() {
 		return nom_producte;
 	}
-	
-	public String getNif() {
-		return nif;
+
+	public Productor getProductor() {
+		return productor;
 	}
-	
-	public String getNom_venedor() {
-		return nom_venedor;
+
+	public void setProductor(Productor productor) {
+		this.productor = productor;
 	}
-	
+
 	public double getLat() {
 		return lat;
 	}
@@ -63,9 +61,17 @@ public class Productes {
 	public String getCodi() {
 		return codi;
 	}
-	
+
+	public float getStock() {
+		return stock;
+	}
+
+	public void setStock(float stock) {
+		this.stock = stock;
+	}
+
 	public Productes copia() {
-		Productes c = new Productes (this.nom_producte, this.nif, this.nom_venedor, this.lat, this.lon, this.codi);
+		Productes c = new Productes (this.nom_producte,this.productor, this.lat, this.lon, this.codi, this.stock);
 		return c;
 	}
 	

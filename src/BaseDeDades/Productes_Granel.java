@@ -7,19 +7,18 @@ public class Productes_Granel extends Productes {
 	private Boolean celiac;
 	private int stockg;
 	
-	public Productes_Granel  (String nomp, String nifv, String nomv, double latitud, double longitud, String codit, int p, Boolean c, int stock) {
-		super(nomp, nifv, nomv, latitud, longitud, codit);
+	public Productes_Granel  (String nomp, Productor productor, double latitud, double longitud, String codit, int p, Boolean c, float stock) {
+		super(nomp, productor, latitud, longitud, codit, stock);
 		this.preu = p;
 		this.codi_car = "GR_";
 		this.celiac = c;
-		this.stockg = stock;
 	}
 
 	public int getPreu() {
 		return preu;
 	}
 
-	public int getStockg() {
+	public float getStockg() {
 		return stockg;
 	}
 

@@ -1,11 +1,12 @@
 import BaseDeDades.*;
+import Interficie.Aplicacio;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalTime;
+
 import java.util.Date;
 import java.util.Scanner;
 
@@ -33,8 +34,7 @@ public class Main {
 
     public static void llegirFitxers(LlistaCompres llistaCompres, LlistaProductes llistaProductes) throws FileNotFoundException, ParseException {
 
-        Scanner sc =new Scanner(new File("C:\\Users\\serret96\\Desktop\\Progra\\practica3\\Progra3\\Progra3\\src\\compres.txt"));
-        String [] linea = new String[8];
+                String [] linea = new String[8];
         String codi;
         int  quant, cost;
         Date date;
@@ -42,22 +42,7 @@ public class Main {
 
         int i = 0;
 
-        while(sc.hasNextLine())
-        {
-            linea =sc.nextLine().split(";");
 
-            codi = linea[0];
-            quant = Integer.parseInt(linea[1]);
-            date = new SimpleDateFormat("dd/MM/yyyy").parse(linea[2]);
-            cost = Integer.parseInt(linea[3]);
-
-            Compres c = new Compres(codi, quant, date, cost);
-
-            llistaCompres.nouCompra(c);
-
-            i++;
-        }
-        sc.close();
 
         Scanner sc2 =new Scanner(new File("C:\\Users\\serret96\\Desktop\\Progra\\practica3\\Progra3\\Progra3\\src\\productes.txt"));
 
@@ -70,33 +55,57 @@ public class Main {
             double lat = Double.parseDouble(linea[3]);
             double lon = Double.parseDouble(linea[4]);
             //codi = linea[5];
+            float stock = (float) Double.parseDouble(linea[8]);
+            Productor productor = new Productor(nif, nomv);
 
-
-            Productes p = new Productes(nomp, nif, nomv, lat, lon, linea[6]);
+            Productes p = new Productes(nomp, productor, lat, lon, linea[6], stock);
             String [] linea2 = new String[3];
             linea2 = linea[6].split("_");
             if (linea2[0].equals("UT"))
             {
                 int preu = Integer.parseInt(linea[5]);
                 int pes = Integer.parseInt(linea[7]);
-                int stock = Integer.parseInt(linea[8]);
 
-                Productes_Unitat productes_unitat = new Productes_Unitat(nomp, nif, nomv, lat, lon, linea[6], preu, pes, stock);
+
+                Productes_Unitat productes_unitat = new Productes_Unitat(nomp, productor, lat, lon, linea[6], preu, pes, stock);
                 llistaProductes.nouProducte(productes_unitat);
             }
             else
             {
                 int preu = Integer.parseInt(linea[5]);
                 Boolean celiac = Boolean.parseBoolean(linea[7]);
-                int stock = Integer.parseInt(linea[8]);
-                Productes_Granel productes_granel = new Productes_Granel(nomp, nif, nomv, lat, lon, linea[6], preu, celiac, stock);
+                Productes_Granel productes_granel = new Productes_Granel(nomp, productor, lat, lon, linea[6], preu, celiac, stock);
                 llistaProductes.nouProducte(productes_granel);
 
             }
 
         }
         sc2.close();
+        Scanner sc =new Scanner(new File("C:\\Users\\serret96\\Desktop\\Progra\\practica3\\Progra3\\Progra3\\src\\compres.txt"));
 
+        while(sc.hasNextLine())
+        {
+            linea =sc.nextLine().split(";");
+
+            codi = linea[0];
+            quant = Integer.parseInt(linea[1]);
+            date = new SimpleDateFormat("dd/MM/yyyy").parse(linea[2]);
+            cost = Integer.parseInt(linea[3]);
+            Productes [] producte = llistaProductes.getLlista();
+            Compres c = null;
+            for (int j = 0; j < llistaProductes.getnProductes(); j++) {
+                if (codi.equals(producte[i].getCodi()))
+                {
+                    c = new Compres(codi, quant, date, cost, producte[i]);
+                }
+            }
+
+
+            llistaCompres.nouCompra(c);
+
+            i++;
+        }
+        sc.close();
 
     }
 
@@ -129,14 +138,18 @@ public class Main {
             if (linea[0].equals("UT"))
             {
                 Productes_Unitat pu = (Productes_Unitat) p1;
-                pw2.write(pu.getCodi()+";"+pu.getNif()+";"+pu.getNom_producte()+";"+pu.getNom_venedor()+
-                        ";"+pu.getLat()+";"+pu.getLon()+";"+pu.getPreu()+";"+pu.getPreukg()+";"+pu.getStocku()+"\n");
+                Productor productor = pu.getProductor();
+
+                pw2.write(pu.getCodi()+";"+productor.getNif()+";"+pu.getNom_producte()+";"+productor.getNomproductor()+
+                        ";"+pu.getLat()+";"+pu.getLon()+";"+pu.getPreu()+";"+pu.getPreukg()+";"+p1.getStock()+"\n");
 
             }
             else
             {
                 Productes_Granel pu = (Productes_Granel) p1;
-                pw2.write(pu.getCodi()+";"+pu.getNif()+";"+pu.getNom_producte()+";"+pu.getNom_venedor()+";"+
+                Productor productor = pu.getProductor();
+
+                pw2.write(pu.getCodi()+";"+productor.getNif()+";"+pu.getNom_producte()+";"+productor.getNomproductor()+";"+
                         pu.getLat()+";"+pu.getLon()+";"+pu.getPreu()+";"+pu.getCeliac()+";"+pu.getStockg()+"\n");
             }
 
@@ -151,10 +164,11 @@ public class Main {
         Productes [] llista = llistaProductes.getLlista();
         for (int i = 0; i < llistaProductes.getnProductes(); i++) {
             p = llista[i];
+            Productor productor = p.getProductor();
             System.out.println("Producte "+(i+1)+"\n Nom producte: "+ p.getNom_producte());
             System.out.println(" Codi: "+ p.getCodi());
-            System.out.println(" Venedor: "+ p.getNom_venedor());
-            System.out.println(" NIF: "+ p.getNif()+ "\n\n");
+            System.out.println(" Venedor: "+ productor.getNomproductor());
+            System.out.println(" NIF: "+ productor.getNif()+ "\n\n");
         }
     }
     public static  void imprimirLlistaCeliacs(LlistaProductes llistaProductes)
@@ -165,10 +179,12 @@ public class Main {
         Productes p;
         for (int i = 0; i < llistaProductes.getnProductes(); i++) {
             p = llista[i];
+            Productor productor = p.getProductor();
+
             System.out.println("Producte "+(i+1)+"\n Nom producte: "+ p.getNom_producte());
             System.out.println(" Codi: "+ p.getCodi());
-            System.out.println(" Venedor: "+ p.getNom_venedor());
-            System.out.println(" NIF: "+ p.getNif()+ "\n\n");
+            System.out.println(" Venedor: "+ productor.getNomproductor());
+            System.out.println(" NIF: "+ productor.getNif()+ "\n\n");
         }
     }
     public static void imprimirProductesMateix(LlistaProductes llistaProductes)
@@ -178,10 +194,12 @@ public class Main {
         Productes p;
         for (int i = 0; i < llistaProductes.getnProductes(); i++) {
             p = llista[i];
+            Productor productor = p.getProductor();
+
             System.out.println("Producte "+(i+1)+"\n Nom producte: "+ p.getNom_producte());
             System.out.println(" Codi: "+ p.getCodi());
-            System.out.println(" Venedor: "+ p.getNom_venedor());
-            System.out.println(" NIF: "+ p.getNif()+ "\n\n");
+            System.out.println(" Venedor: "+ productor.getNomproductor());
+            System.out.println(" NIF: "+ productor.getNif()+ "\n\n");
         }
     }
 
@@ -200,6 +218,7 @@ public class Main {
         double lat = sc.nextDouble();
         System.out.println("long:");
         double longi = sc.nextDouble();
+        Productor productor1 = new Productor(nif, productor);
 
         System.out.println("Es tracta de granel o unitat? (1 = granel| 0 = unitat)");
         if (sc.nextInt() == 1)
@@ -219,7 +238,7 @@ public class Main {
             System.out.println("Stock del producte");
             int stock = sc.nextInt();
 
-            Productes_Granel gr =  new Productes_Granel(nom, nif, productor, lat, longi,codi, preu, control, stock);
+            Productes_Granel gr =  new Productes_Granel(nom, productor1, lat, longi,codi, preu, control, stock);
             productes = gr;
         }
         else
@@ -234,7 +253,7 @@ public class Main {
             System.out.println("Stock del producte: ");
             int stock = sc.nextInt();
 
-            Productes_Unitat un =  new Productes_Unitat(nom, nif, productor, lat, longi,codi, preu, preukg, stock);
+            Productes_Unitat un =  new Productes_Unitat(nom, productor1, lat, longi,codi, preu, preukg, stock);
             productes = un;
         }
         return productes;
@@ -278,6 +297,7 @@ public class Main {
             System.out.println("11. Salir");
             System.out.println("Escribe una de las opciones");
             opcion = sn.nextInt();
+
 
 
 
@@ -393,7 +413,7 @@ public class Main {
         {
             cost = quantitat *  ((Productes_Granel) llista[producte]).getPreu();
         }
-        Compres compres = new Compres(codi, quantitat, date, cost);
+        Compres compres = new Compres(codi, quantitat, date, cost, llista[producte]);
         llistaCompres.nouCompra(compres);
     }
 
@@ -417,14 +437,14 @@ public class Main {
         {
             Productes_Unitat ut = (Productes_Unitat) llista[producte];
             System.out.println("Preu kg actual: "+ ut.getPreukg());
-            System.out.println("Preu estoc: "+ ut.getStocku()+ "en Unitats\n");
+            System.out.println("Preu estoc: "+ llista[producte].getStock()+ "en Unitats\n");
 
             System.out.println("Introdueix nou preu:");
             preu = scanner.nextInt();
             System.out.println("Introdueix nou estoc:");
             estoc = scanner.nextInt();
             ut.setPreu(preu);
-            ut.setStockU(estoc);
+            llista[producte].setStock(estoc);
             llista[producte] = ut;
         }
         else
