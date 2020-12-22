@@ -118,6 +118,23 @@ public class LlistaProductes {
 		}
 		return aux;
 	}
+
+	public LlistaProductes productesGranel () {
+		Productes[] llistaCeliacs;
+		llistaCeliacs = new Productes [nProductes];
+		int nCeliacs = 0;
+		for (int i=0; i<nProductes; i++) {
+			if (llistap[i] instanceof Productes_Granel ){
+				llistaCeliacs[nCeliacs]=llistap[i];
+				nCeliacs++;
+			}
+		}
+		LlistaProductes aux = new LlistaProductes (nCeliacs);
+		for (int index = 0; index<nCeliacs; index++) {
+			aux.nouProducte(llistaCeliacs[index]);
+		}
+		return aux;
+	}
 	
 
 	
