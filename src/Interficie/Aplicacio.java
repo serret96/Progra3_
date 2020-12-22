@@ -28,6 +28,7 @@ public class Aplicacio extends JFrame {
 	private String[] columns = new String[] {"Nom Producte", "Nif", "Nom Venedor", "Latitud", "Longitud","Codi"};
 	private JTable table = new JTable(null, columns);
 	private Object [][] data = new Object[10][6];
+	private  LlistaProductes llistaProductes;
 
 
 	public Aplicacio(String titol) throws FileNotFoundException {
@@ -37,7 +38,7 @@ public class Aplicacio extends JFrame {
 		Container meuCont=getContentPane();
 		meuCont.setLayout(new BorderLayout());
 
-		LlistaProductes llistaProductes = llegirFitxers();;
+		 llistaProductes = llegirFitxers();;
 		Productes [] productes1 = llistaProductes.getLlista();
 
 		nord.add(cb1);
@@ -80,7 +81,19 @@ public class Aplicacio extends JFrame {
 			if (checkbox.isSelected()) {
 				if (checkbox == cb1) {
 					System.out.println("Tipus is selected");
-					data[0][1] = "aaaaaaaaaaaaaaaaaa";
+					llistaProductes =llistaProductes.productesGranel();
+					Productes [] productes1 = llistaProductes.getLlista();
+
+					for (int i = 0; i < llistaProductes.getnProductes(); i++) {
+						Productes productes2 = productes1[i];
+						Productor productor = productes2.getProductor();
+						data[i][0] = productes2.getNom_producte();
+						data[i][1] = productor.getNif();
+						data[i][2] = productor.getNomproductor();
+						data[i][3] = productes2.getLat();
+						data[i][4] = productes2.getLon();
+						data[i][5] = productes2.getCodi();
+					}
 
 					table = new JTable(data, columns);
 				} else if (checkbox == cb2) {
