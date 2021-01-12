@@ -1,20 +1,23 @@
 package BaseDeDades;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 
 	public class LlistaCompres {
 		private int nCompres;
-		private Compres[] llistac;
+		private Compra[] llistac;
 		 
 		public LlistaCompres (int n) {
 			nCompres = 0;
-			llistac = new Compres[n];
+			llistac = new Compra[n];
 		}
 		
-		public Compres[] getLlista() {
+		public Compra[] getLlista() {
 			return llistac;
 		}
 
-		public void setLlista(Compres[] llista) {
+		public void setLlista(Compra[] llista) {
 			this.llistac = llista;
 		}
 
@@ -34,7 +37,7 @@ import java.util.Arrays;
 		 * Afegeix una nova compra a la llista
 		 * @param c, compra que volem afegir
 		 */
-		public void nouCompra(Compres c) {       
+		public void nouCompra(Compra c) {       
 			int i = 0;
 			boolean trobat = false;
 
@@ -52,5 +55,20 @@ import java.util.Arrays;
 			}
 		}
 		
-	}
+		public void ordenarLlista() {
+			int i, j;
+			Compra aux;
+	         for(i=0;i<llistac.length-1;i++)
+	              for(j=0;j<llistac.length-i-1;j++)
+	                   if(llistac[j+1].getData().after(llistac[j].getData())){
+	                      aux=llistac[j+1];
+	                      llistac[j+1]=llistac[j];
+	                      llistac[j]=aux;
+	                   }
+			
+			
+			}
+		
+		}
+		
 

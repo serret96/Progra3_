@@ -3,18 +3,18 @@ import java.util.Arrays;
 
 public class LlistaProductes {
 	private int nProductes;
-	private Productes[] llistap;
+	private Producte[] llistap;
 	 
 	public LlistaProductes (int n) {
 		nProductes = 0;
-		llistap = new Productes[n];
+		llistap = new Producte[n];
 	}
 	
-	public Productes[] getLlista() {
+	public Producte[] getLlista() {
 		return llistap;
 	}
 
-	public void setLlista(Productes[] llista) {
+	public void setLlista(Producte[] llista) {
 		this.llistap = llista;
 	}
 
@@ -33,7 +33,7 @@ public class LlistaProductes {
 	 * Afegeix un producte a la llista
 	 * @param p, producte que volem afegir
 	 */
-	public void nouProducte(Productes p) {       
+	public void nouProducte(Producte p) {       
 		int i = 0;
 		boolean trobat = false;
 
@@ -77,11 +77,11 @@ public class LlistaProductes {
 	 */
 	
 	public LlistaProductes productesCeliacs () {
-		Productes[] llistaCeliacs;
-		llistaCeliacs = new Productes [nProductes];
+		Producte[] llistaCeliacs;
+		llistaCeliacs = new Producte [nProductes];
 		int nCeliacs = 0;
 		for (int i=0; i<nProductes; i++) {
-			if (llistap[i] instanceof Productes_Granel && ((Productes_Granel) llistap[i]).getCeliac()){
+			if (llistap[i] instanceof Producte_Granel && ((Producte_Granel) llistap[i]).getCeliac()){
 				llistaCeliacs[nCeliacs]=llistap[i];
 				nCeliacs++;
 			}
@@ -101,8 +101,8 @@ public class LlistaProductes {
 	 */
 	
 	public LlistaProductes productesMateix_productor (String nif) {
-		Productes[] llista_aux;
-		llista_aux = new Productes [nProductes];
+		Producte[] llista_aux;
+		llista_aux = new Producte [nProductes];
 		int nproductes = 0;
 		for (int i=0; i<nProductes; i++) {
 			Productor productor = llistap[i].getProductor();
@@ -120,11 +120,11 @@ public class LlistaProductes {
 	}
 
 	public LlistaProductes productesGranel () {
-		Productes[] llistaCeliacs;
-		llistaCeliacs = new Productes [nProductes];
+		Producte[] llistaCeliacs;
+		llistaCeliacs = new Producte [nProductes];
 		int nCeliacs = 0;
 		for (int i=0; i<nProductes; i++) {
-			if (llistap[i] instanceof Productes_Granel ){
+			if (llistap[i] instanceof Producte_Granel ){
 				llistaCeliacs[nCeliacs]=llistap[i];
 				nCeliacs++;
 			}
@@ -135,6 +135,60 @@ public class LlistaProductes {
 		}
 		return aux;
 	}
+	
+	public LlistaProductes productesUnitats () {
+		Producte[] llistaUnitats;
+		llistaUnitats = new Producte [nProductes];
+		int nUnitat = 0;
+		for (int i=0; i<nProductes; i++) {
+			if (llistap[i] instanceof Producte_Unitat ){
+				llistaUnitats[nUnitat]=llistap[i];
+				nUnitat++;
+			}
+		}
+		LlistaProductes aux = new LlistaProductes (nUnitat);
+		for (int index = 0; index<nUnitat; index++) {
+			aux.nouProducte(llistaUnitats[index]);
+		}
+		return aux;
+	}
+	
+	public LlistaProductes productesStock () {
+		Producte[] llista;
+		llista = new Producte [nProductes];
+		int nUnitat = 0;
+		for (int i=0; i<nProductes; i++) {
+			if (llistap[i].getStock() > 0.0 ){
+				llista[nUnitat]=llistap[i];
+				nUnitat++;
+			}
+		}
+		LlistaProductes aux = new LlistaProductes (nUnitat);
+		for (int index = 0; index<nUnitat; index++) {
+			aux.nouProducte(llista[index]);
+		}
+		return aux;
+	}
+	
+	public LlistaProductes productesNoStock () {
+		Producte[] llista;
+		llista = new Producte [nProductes];
+		int nUnitat = 0;
+		for (int i=0; i<nProductes; i++) {
+			if (llistap[i].getStock() == 0.0 ){
+				llista[nUnitat]=llistap[i];
+				nUnitat++;
+			}
+		}
+		LlistaProductes aux = new LlistaProductes (nUnitat);
+		for (int index = 0; index<nUnitat; index++) {
+			aux.nouProducte(llista[index]);
+		}
+		return aux;
+	}
+	
+	
+	
 	
 
 	

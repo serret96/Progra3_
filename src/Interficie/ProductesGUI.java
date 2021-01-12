@@ -17,33 +17,32 @@ import java.util.Scanner;
 import java.util.Vector;
 import javax.swing.table.*;
 
-public class Aplicacio extends JFrame {
+public class ProductesGUI extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
 	private JPanel nord = new JPanel ();
-	private JCheckBox cb1 = new JCheckBox("Tipus", false);
+	private JCheckBox cb1 = new JCheckBox("Granel", false);
 	private JCheckBox cb2 = new JCheckBox("Disponibilitat", false);
-	private JButton b1 = new JButton ("Cercar");
-	private String[] columns = new String[] {"Nom Producte", "Nif", "Nom Venedor", "Latitud", "Longitud","Codi"};
-	private JTable table = new JTable(null, columns);
-	private Object [][] data = new Object[10][6];
-	private  LlistaProductes llistaProductes;
+	private String[] columns = new String[] {"Nom Producte", "Nif", "Nom Venedor", "Stock", "Codi"};
+	DefaultTableModel model = new DefaultTableModel(columns,0); 
+	JTable table = new JTable(model); 
+
+	private  LlistaProductes llistaProductes, llistaProductesaux;
 
 
-	public Aplicacio(String titol) throws FileNotFoundException {
+	public ProductesGUI(String titol) throws FileNotFoundException {
 		//popup();
 		super(titol);
 
 		Container meuCont=getContentPane();
 		meuCont.setLayout(new BorderLayout());
 
-		 llistaProductes = llegirFitxers();;
-		Productes [] productes1 = llistaProductes.getLlista();
+		 llistaProductes = llegirFitxers();
+		Producte [] productes1 = llistaProductes.getLlista();
 
 		nord.add(cb1);
 		nord.add(cb2);
-		nord.add(b1);
 		meuCont.add(nord, BorderLayout.NORTH);
 		nord.setLayout(new FlowLayout());
 		// add action listener for the check boxes
@@ -51,27 +50,25 @@ public class Aplicacio extends JFrame {
 		cb1.addActionListener(actionListener);
 		cb2.addActionListener(actionListener);
 
-
 		for (int i = 0; i < llistaProductes.getnProductes(); i++) {
-			Productes productes2 = productes1[i];
+			Producte productes2 = productes1[i];
 			Productor productor = productes2.getProductor();
-			data[i][0] = productes2.getNom_producte();
-			data[i][1] = productor.getNif();
-			data[i][2] = productor.getNomproductor();
-			data[i][3] = productes2.getLat();
-			data[i][4] = productes2.getLon();
-			data[i][5] = productes2.getCodi();
+			DefaultTableModel model = (DefaultTableModel) table.getModel();
+			model.addRow(new Object[]{productes2.getNom_producte(),productor.getNif(),productor.getNomproductor(),productes2.getStock(),
+					productes2.getCodi()});
 		}
 
-
-		table = new JTable(data, columns);
-
+		
 		meuCont.add(new JScrollPane(table), BorderLayout.CENTER);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setSize(900,300);
 		setVisible(true);
 
 
+	}
+	
+	public void refresh  () {
+		model.setRowCount(0);
 	}
 
 	class ActionHandler implements ActionListener {
@@ -80,34 +77,66 @@ public class Aplicacio extends JFrame {
 			JCheckBox checkbox = (JCheckBox) event.getSource();
 			if (checkbox.isSelected()) {
 				if (checkbox == cb1) {
-					System.out.println("Tipus is selected");
-					llistaProductes =llistaProductes.productesGranel();
-					Productes [] productes1 = llistaProductes.getLlista();
+					refresh();
+					System.out.println("Granel is selected");
+					llistaProductesaux = llistaProductes.productesGranel();
+					Producte [] productes1 = llistaProductesaux.getLlista();
 
-					for (int i = 0; i < llistaProductes.getnProductes(); i++) {
-						Productes productes2 = productes1[i];
+					for (int i = 0; i < llistaProductesaux.getnProductes(); i++) {
+						Producte productes2 = productes1[i];
 						Productor productor = productes2.getProductor();
-						data[i][0] = productes2.getNom_producte();
-						data[i][1] = productor.getNif();
-						data[i][2] = productor.getNomproductor();
-						data[i][3] = productes2.getLat();
-						data[i][4] = productes2.getLon();
-						data[i][5] = productes2.getCodi();
+						DefaultTableModel model = (DefaultTableModel) table.getModel();
+						model.addRow(new Object[]{productes2.getNom_producte(),productor.getNif(),productor.getNomproductor(),productes2.getStock(),
+								productes2.getCodi()});
 					}
-
-					table = new JTable(data, columns);
+					
 				} else if (checkbox == cb2) {
+					refresh();
 					System.out.println("Disponibilitat is selected");
+					llistaProductesaux =llistaProductes.productesStock();
+					Producte [] productes1 = llistaProductesaux.getLlista();
+
+					for (int i = 0; i < llistaProductesaux.getnProductes(); i++) {
+						Producte productes2 = productes1[i];
+						Productor productor = productes2.getProductor();
+						DefaultTableModel model = (DefaultTableModel) table.getModel();
+						model.addRow(new Object[]{productes2.getNom_producte(),productor.getNif(),productor.getNomproductor(),productes2.getStock(),
+								productes2.getCodi()});
+					}
+			
+					
 				}
 			} else {
 				if (checkbox == cb1) {
-					System.out.println("Tipus is not selected");
+					refresh();
+					System.out.println("Granel is not selected");
+					llistaProductesaux =llistaProductes.productesUnitats();
+					Producte [] productes1 = llistaProductesaux.getLlista();
+
+					for (int i = 0; i < llistaProductesaux.getnProductes(); i++) {
+						Producte productes2 = productes1[i];
+						Productor productor = productes2.getProductor();
+						DefaultTableModel model = (DefaultTableModel) table.getModel();
+						model.addRow(new Object[]{productes2.getNom_producte(),productor.getNif(),productor.getNomproductor(),productes2.getStock(),
+								productes2.getCodi()});
+					}
+
 
 				} else if (checkbox == cb2) {
+					refresh();
 					System.out.println("Disponibilitat is not selected");
+					llistaProductesaux =llistaProductes.productesStock();
+					Producte [] productes1 = llistaProductesaux.getLlista();
+
+					for (int i = 0; i < llistaProductesaux.getnProductes(); i++) {
+						Producte productes2 = productes1[i];
+						Productor productor = productes2.getProductor();
+						DefaultTableModel model = (DefaultTableModel) table.getModel();
+						model.addRow(new Object[]{productes2.getNom_producte(),productor.getNif(),productor.getNomproductor(),productes2.getStock(),
+								productes2.getCodi()});
+					}
 
 				}
-				data[0][1] = "bbbbbbbbbbbbbbbbbb";
 
 			}
 
@@ -115,7 +144,7 @@ public class Aplicacio extends JFrame {
 	}
 
 	public static void main(String[] args) throws FileNotFoundException {
-		new Aplicacio("Productes");
+		new ProductesGUI("Productes");
 	}
 
 
@@ -171,9 +200,9 @@ public class Aplicacio extends JFrame {
 		String codi;
 		int  quant, cost;
 		Date date;
-		Compres[] llistac;
+		Compra[] llistac;
 
-		Scanner sc2 =new Scanner(new File("C:\\Users\\serret96\\Desktop\\Progra\\practica3\\Progra3\\Progra3\\src\\productes.txt"));
+		Scanner sc2 =new Scanner(new File("C:\\Users\\ruben\\git\\Progra3_Definitiu\\src\\productes.txt"));
 
 		while(sc2.hasNextLine())
 		{
@@ -196,7 +225,7 @@ public class Aplicacio extends JFrame {
 				int pes = Integer.parseInt(linea[7]);
 				int stock = Integer.parseInt(linea[8]);
 
-				Productes_Unitat productes_unitat = new Productes_Unitat(nomp, productor, lat, lon, linea[6], preu, pes, stock);
+				Producte_Unitat productes_unitat = new Producte_Unitat(nomp, productor, lat, lon, linea[6], preu, pes, stock);
 				llistaProductes.nouProducte(productes_unitat);
 			}
 			else
@@ -204,7 +233,7 @@ public class Aplicacio extends JFrame {
 				int preu = Integer.parseInt(linea[5]);
 				Boolean celiac = Boolean.parseBoolean(linea[7]);
 				int stock = Integer.parseInt(linea[8]);
-				Productes_Granel productes_granel = new Productes_Granel(nomp, productor, lat, lon, linea[6], preu, celiac, stock);
+				Producte_Granel productes_granel = new Producte_Granel(nomp, productor, lat, lon, linea[6], preu, celiac, stock);
 				llistaProductes.nouProducte(productes_granel);
 
 			}
@@ -215,4 +244,5 @@ public class Aplicacio extends JFrame {
 		return llistaProductes;
 
 	}
+	
 }

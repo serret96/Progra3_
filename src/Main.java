@@ -1,5 +1,4 @@
 import BaseDeDades.*;
-import Interficie.Aplicacio;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -38,7 +37,7 @@ public class Main {
         String codi;
         int  quant, cost;
         Date date;
-        Compres[] llistac;
+        Compra[] llistac;
 
         int i = 0;
 
@@ -58,7 +57,7 @@ public class Main {
             float stock = (float) Double.parseDouble(linea[8]);
             Productor productor = new Productor(nif, nomv);
 
-            Productes p = new Productes(nomp, productor, lat, lon, linea[6], stock);
+            Producte p = new Producte(nomp, productor, lat, lon, linea[6], stock);
             String [] linea2 = new String[3];
             linea2 = linea[6].split("_");
             if (linea2[0].equals("UT"))
@@ -67,14 +66,14 @@ public class Main {
                 int pes = Integer.parseInt(linea[7]);
 
 
-                Productes_Unitat productes_unitat = new Productes_Unitat(nomp, productor, lat, lon, linea[6], preu, pes, stock);
+                Producte_Unitat productes_unitat = new Producte_Unitat(nomp, productor, lat, lon, linea[6], preu, pes, stock);
                 llistaProductes.nouProducte(productes_unitat);
             }
             else
             {
                 int preu = Integer.parseInt(linea[5]);
                 Boolean celiac = Boolean.parseBoolean(linea[7]);
-                Productes_Granel productes_granel = new Productes_Granel(nomp, productor, lat, lon, linea[6], preu, celiac, stock);
+                Producte_Granel productes_granel = new Producte_Granel(nomp, productor, lat, lon, linea[6], preu, celiac, stock);
                 llistaProductes.nouProducte(productes_granel);
 
             }
@@ -91,12 +90,12 @@ public class Main {
             quant = Integer.parseInt(linea[1]);
             date = new SimpleDateFormat("dd/MM/yyyy").parse(linea[2]);
             cost = Integer.parseInt(linea[3]);
-            Productes [] producte = llistaProductes.getLlista();
-            Compres c = null;
+            Producte [] producte = llistaProductes.getLlista();
+            Compra c = null;
             for (int j = 0; j < llistaProductes.getnProductes(); j++) {
                 if (codi.equals(producte[i].getCodi()))
                 {
-                    c = new Compres(codi, quant, date, cost, producte[i]);
+                    c = new Compra(codi, quant, date, cost, producte[i]);
                 }
             }
 
@@ -113,10 +112,10 @@ public class Main {
 
         PrintWriter pw = new PrintWriter(new File("compres.txt"));
 
-        Compres []c = new Compres[llistaCompres.getnCompres()];
+        Compra []c = new Compra[llistaCompres.getnCompres()];
         c = llistaCompres.getLlista();
 
-        Compres c1;
+        Compra c1;
         for (int i = 0; i < llistaCompres.getnCompres(); i++)
         {
             c1 = c[i];
@@ -126,9 +125,9 @@ public class Main {
 
         PrintWriter pw2 = new PrintWriter(new File("compres2.txt"));
 
-        Productes []p = new Productes[llistaProductes.getnProductes()];
+        Producte []p = new Producte[llistaProductes.getnProductes()];
         p = llistaProductes.getLlista();
-        Productes p1;
+        Producte p1;
 
         for (int i = 0; i < llistaProductes.getnProductes(); i++)
         {
@@ -137,7 +136,7 @@ public class Main {
             linea = p1.getCodi().split("_");
             if (linea[0].equals("UT"))
             {
-                Productes_Unitat pu = (Productes_Unitat) p1;
+                Producte_Unitat pu = (Producte_Unitat) p1;
                 Productor productor = pu.getProductor();
 
                 pw2.write(pu.getCodi()+";"+productor.getNif()+";"+pu.getNom_producte()+";"+productor.getNomproductor()+
@@ -146,7 +145,7 @@ public class Main {
             }
             else
             {
-                Productes_Granel pu = (Productes_Granel) p1;
+                Producte_Granel pu = (Producte_Granel) p1;
                 Productor productor = pu.getProductor();
 
                 pw2.write(pu.getCodi()+";"+productor.getNif()+";"+pu.getNom_producte()+";"+productor.getNomproductor()+";"+
@@ -160,8 +159,8 @@ public class Main {
 
     public static void imprimirLlistaProductes(LlistaProductes llistaProductes)
     {
-        Productes p;
-        Productes [] llista = llistaProductes.getLlista();
+        Producte p;
+        Producte [] llista = llistaProductes.getLlista();
         for (int i = 0; i < llistaProductes.getnProductes(); i++) {
             p = llista[i];
             Productor productor = p.getProductor();
@@ -175,8 +174,8 @@ public class Main {
     {
 
         llistaProductes = llistaProductes.productesCeliacs();
-        Productes [] llista = llistaProductes.getLlista();
-        Productes p;
+        Producte [] llista = llistaProductes.getLlista();
+        Producte p;
         for (int i = 0; i < llistaProductes.getnProductes(); i++) {
             p = llista[i];
             Productor productor = p.getProductor();
@@ -190,8 +189,8 @@ public class Main {
     public static void imprimirProductesMateix(LlistaProductes llistaProductes)
     {
         llistaProductes = llistaProductes.productesMateix_productor("11111111A");
-        Productes [] llista = llistaProductes.getLlista();
-        Productes p;
+        Producte [] llista = llistaProductes.getLlista();
+        Producte p;
         for (int i = 0; i < llistaProductes.getnProductes(); i++) {
             p = llista[i];
             Productor productor = p.getProductor();
@@ -203,9 +202,9 @@ public class Main {
         }
     }
 
-    public static Productes nouPro()
+    public static Producte nouPro()
     {
-        Productes productes;
+        Producte productes;
         Scanner sc = new Scanner(System.in);
         System.out.println("Inserim un nou producte");
         System.out.println("Nom producte: ");
@@ -238,7 +237,7 @@ public class Main {
             System.out.println("Stock del producte");
             int stock = sc.nextInt();
 
-            Productes_Granel gr =  new Productes_Granel(nom, productor1, lat, longi,codi, preu, control, stock);
+            Producte_Granel gr =  new Producte_Granel(nom, productor1, lat, longi,codi, preu, control, stock);
             productes = gr;
         }
         else
@@ -253,7 +252,7 @@ public class Main {
             System.out.println("Stock del producte: ");
             int stock = sc.nextInt();
 
-            Productes_Unitat un =  new Productes_Unitat(nom, productor1, lat, longi,codi, preu, preukg, stock);
+            Producte_Unitat un =  new Producte_Unitat(nom, productor1, lat, longi,codi, preu, preukg, stock);
             productes = un;
         }
         return productes;
@@ -317,7 +316,7 @@ public class Main {
                     break;
                 case 4:
                     System.out.println("Has seleccionado la opcion 4");
-                    Productes productes;
+                    Producte productes;
                     productes =nouPro();
                     llistaProductes.nouProducte(productes);
                     break;
@@ -372,7 +371,7 @@ public class Main {
 
         System.out.println("introdueix el producte: ");
         String codi = scanner.nextLine();
-        Productes[] llista = llistaProductes.getLlista();
+        Producte[] llista = llistaProductes.getLlista();
         for (int i = 0; i < llistaProductes.getnProductes(); i++) {
 
             if (codi.equals(llista[i].getCodi()))
@@ -395,7 +394,7 @@ public class Main {
 	    Date date = new Date();
 
         int cost = 0;
-        Productes [] llista = llistaProductes.getLlista();
+        Producte [] llista = llistaProductes.getLlista();
         int producte = 0;
         for (int i = 0; i < llistaProductes.getnProductes(); i++) {
             if (codi.equals(llista[i].getCodi()))
@@ -407,13 +406,13 @@ public class Main {
         String [] linea = codi.split("_");
         if (linea[0].equals("UT"))
         {
-            cost = quantitat *  ((Productes_Unitat) llista[producte]).getPreukg();
+            cost = quantitat *  ((Producte_Unitat) llista[producte]).getPreukg();
         }
         else
         {
-            cost = quantitat *  ((Productes_Granel) llista[producte]).getPreu();
+            cost = quantitat *  ((Producte_Granel) llista[producte]).getPreu();
         }
-        Compres compres = new Compres(codi, quantitat, date, cost, llista[producte]);
+        Compra compres = new Compra(codi, quantitat, date, cost, llista[producte]);
         llistaCompres.nouCompra(compres);
     }
 
@@ -422,7 +421,7 @@ public class Main {
 
         System.out.println("Quin producte vols modificar (Insereix el codi)");
         String codi = scanner.nextLine();
-        Productes [] llista = llistaProductes.getLlista();
+        Producte [] llista = llistaProductes.getLlista();
         int preu, estoc;
         int producte = 0;
         for (int i = 0; i < llistaProductes.getnProductes(); i++) {
@@ -435,7 +434,7 @@ public class Main {
         String [] linea = codi.split("_");
         if (linea[0].equals("UT"))
         {
-            Productes_Unitat ut = (Productes_Unitat) llista[producte];
+            Producte_Unitat ut = (Producte_Unitat) llista[producte];
             System.out.println("Preu kg actual: "+ ut.getPreukg());
             System.out.println("Preu estoc: "+ llista[producte].getStock()+ "en Unitats\n");
 
@@ -449,7 +448,7 @@ public class Main {
         }
         else
         {
-            Productes_Granel gr = (Productes_Granel) llista[producte];
+            Producte_Granel gr = (Producte_Granel) llista[producte];
             System.out.println("Preu acutal: "+ gr.getPreu());
             System.out.println("Estoc acutal: "+ gr.getStockg()+ "en kg \n");
             System.out.println("Introdueix nou preu:");
@@ -465,7 +464,7 @@ public class Main {
     }
 
     private static void visualitzarCompres(LlistaCompres llistaCompres) {
-        Compres [] llista;
+        Compra [] llista;
         llista = llistaCompres.getLlista();
 
         for (int i = 0; i < llista.length; i++) {

@@ -2,14 +2,14 @@ package BaseDeDades;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
-public class Compres {
+public class Compra {
 	private String codip;
 	private int quantitat;
 	private Date data;
 	private int cost;
-	private Productes productes;
+	private Producte productes;
 	
-	public Compres (String c, int q, Date d, int coste, Productes  productes) {
+	public Compra (String c, int q, Date d, int coste, Producte  productes) {
 		this.codip = c;
 		this.quantitat = q;
 		this.data = d;
@@ -33,8 +33,8 @@ public class Compres {
 		return cost;
 	}
 
-	public Compres copia() {
-		Compres p = new Compres (this.codip, this.quantitat, this.data, this.cost, this.productes);
+	public Compra copia() {
+		Compra p = new Compra (this.codip, this.quantitat, this.data, this.cost, this.productes);
 		return p;
 	}
 }

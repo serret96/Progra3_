@@ -1,6 +1,6 @@
 package BaseDeDades;
 
-public class Productes {
+public class Producte {
 	private String nom_producte;
 	private Productor productor;
 	private double lat;
@@ -8,7 +8,7 @@ public class Productes {
 	private String codi;
 	private float stock;
 
-	public Productes(String nomp, Productor productor, double latitud, double longitud, String codit, float stock) {
+	public Producte(String nomp, Productor productor, double latitud, double longitud, String codit, float stock) {
 		super();
 		this.nom_producte = nomp;
 		this.productor = productor;
@@ -18,7 +18,7 @@ public class Productes {
 		this.stock = stock;
 	}
 
-	public Productes(String nom, Productor productor, double lat, double longi, String codi, int preu, int preukg, float stock) {
+	public Producte(String nom, Productor productor, double lat, double longi, String codi, int preu, int preukg, float stock) {
 		super();
 		this.nom_producte = nom;
 		this.productor = productor;
@@ -28,7 +28,7 @@ public class Productes {
 		this.stock = stock;
 	}
 
-	public Productes(String nom, Productor productor, double lat, double longi, String codi, int preu, boolean control, float stock) {
+	public Producte(String nom, Productor productor, double lat, double longi, String codi, int preu, boolean control, float stock) {
 		super();
 		this.nom_producte = nom;
 		this.productor = productor;
@@ -70,8 +70,8 @@ public class Productes {
 		this.stock = stock;
 	}
 
-	public Productes copia() {
-		Productes c = new Productes (this.nom_producte,this.productor, this.lat, this.lon, this.codi, this.stock);
+	public Producte copia() {
+		Producte c = new Producte (this.nom_producte,this.productor, this.lat, this.lon, this.codi, this.stock);
 		return c;
 	}
 	
