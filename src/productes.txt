@@ -1,5 +1,7 @@
 Aigua de Valencia;11111111A;Rodolfo Martinez;150;20;15;UT_10;2;200
-Pipas;11111111A;Rodolfo Martinez;150;20;15;GR_10;TRUE;200
-Pipas G;11111111B;Eustaqui;150;20;15;GR_12;FALSE;200
-Pipas A;11111111B;Eustaqui;150;20;15;GR_12;FALSE;0
-Pipas B;11111111B;Eustaqui;150;20;15;GR_12;FALSE;1
+Aigua de Valencia v2;11111111A;Rodolfo Martinez;150;20;15;UT_12;2;200
+Aidua del grifo;11111111A;Rodolfo Martinez;150;20;15;UT_15;2;0
+Pipas Adolf;11111111A;Rodolfo Martinez;150;20;15;GR_10;TRUE;200
+Pipas G;11111111B;Eustaqui;150;20;15;GR_15;FALSE;200
+Pipas A;11111111B;Eustaqui;150;20;15;GR_18;FALSE;0
+Pipas B;11111111B;Eustaqui;150;20;15;GR_19;FALSE;1

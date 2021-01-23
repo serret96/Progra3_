@@ -1,5 +1,16 @@
 package BaseDeDades;
 
+/**
+ * Pràctica 3 Programació
+ *
+ * Ruben Gomez
+ * ruben.gomez@estudiants.urv.cat
+ *
+ * Ruben Serret Montserrat
+ * ruben.serret@estudiants.urv.cat
+ *
+ */
+
 public class Client {
 	private double latc;
 	private double lonc;

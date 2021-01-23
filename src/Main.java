@@ -7,11 +7,24 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import java.util.Date;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-public class Main {
+/**
+ * Pràctica 3 Programació
+ *
+ * Ruben Gomez
+ * ruben.gomez@estudiants.urv.cat
+ *
+ * Ruben Serret Montserrat
+ * ruben.serret@estudiants.urv.cat
+ *
+ */
 
-	/**
+public class Main {
+    private static LlistaProductors llistaProductors = new LlistaProductors(20);
+
+    /**
 	 * Metode que calcula la distancia entre dos grups de coordenades
 	 * @param lat1, lng1: dades referents al primer grup. lat2, lng2: segon grup de dades de coordenades
 	 * @return distancia entre els dos grups
@@ -30,100 +43,100 @@ public class Main {
    
         return distancia;  
     }
+	
+	
+	public static LlistaCompres llegirFitxersCompres() throws FileNotFoundException, ParseException {
+		LlistaCompres llistaCompres = new LlistaCompres(10);
+		String [] linea = new String[8];
+		String codi;
+		int  quant, cost;
+		Date date;
+		Scanner sc =new Scanner(new File("compres3.txt"));
+		while(sc.hasNextLine())
+		{
+			linea =sc.nextLine().split(";");
+			codi = linea[0];
+			quant = Integer.parseInt(linea[1]);
+			date = new SimpleDateFormat("dd/MM/yyyy").parse(linea[2]);
+			cost = Integer.parseInt(linea[3]);
+			Producte producte;
+			Compra c = null;
+			String nomp = linea[4];
+			String nif = linea[5];
+			String nomv = linea[6];
+			double lat = Double.parseDouble(linea[7]);
+			double lon = Double.parseDouble(linea[8]);
+			Productor productor = new Productor(nif, nomv);
+			String [] linea2 = new String[3];
+			linea2 = linea[10].split("_");
+			if (linea2[0].equals("UT"))			//Cas que sigui un producte_unitat
+			{
+				int preu = Integer.parseInt(linea[9]);
+				int pes = Integer.parseInt(linea[11]);
+				int stock = Integer.parseInt(linea[12]);
+				Producte_Unitat productes_unitat = new Producte_Unitat(nomp, productor, lat, lon, linea[10], preu, pes, stock);
+				producte = productes_unitat;
+			}
+			else								//Cas que sigui un producte_granel
+			{
+				int preu = Integer.parseInt(linea[9]);
+				Boolean celiac = Boolean.parseBoolean(linea[11]);
+				float stock = Float.parseFloat(linea[12]);
+				Producte_Granel productes_granel = new Producte_Granel(nomp, productor, lat, lon, linea[10], preu, celiac, stock);
+				producte = productes_granel;
+			}
+			c = new Compra(codi, quant, date, cost, producte);
 
-    public static void llegirFitxers(LlistaCompres llistaCompres, LlistaProductes llistaProductes) throws FileNotFoundException, ParseException {
+			llistaCompres.nouCompra(c);
 
-                String [] linea = new String[8];
-        String codi;
-        int  quant, cost;
-        Date date;
-        Compra[] llistac;
+	}
+		sc.close();
+		return llistaCompres;
+	}
 
-        int i = 0;
-
-
-
-        Scanner sc2 =new Scanner(new File("C:\\Users\\serret96\\Desktop\\Progra\\practica3\\Progra3\\Progra3\\src\\productes.txt"));
-
-        while(sc2.hasNextLine())
-        {
-            linea =sc2.nextLine().split(";");
-            String nomp = linea[0];
-            String nif = linea[1];
-            String nomv = linea[2];
-            double lat = Double.parseDouble(linea[3]);
-            double lon = Double.parseDouble(linea[4]);
-            //codi = linea[5];
-            float stock = (float) Double.parseDouble(linea[8]);
-            Productor productor = new Productor(nif, nomv);
-
-            Producte p = new Producte(nomp, productor, lat, lon, linea[6], stock);
-            String [] linea2 = new String[3];
-            linea2 = linea[6].split("_");
-            if (linea2[0].equals("UT"))
-            {
-                int preu = Integer.parseInt(linea[5]);
-                int pes = Integer.parseInt(linea[7]);
-
-
-                Producte_Unitat productes_unitat = new Producte_Unitat(nomp, productor, lat, lon, linea[6], preu, pes, stock);
-                llistaProductes.nouProducte(productes_unitat);
-            }
-            else
-            {
-                int preu = Integer.parseInt(linea[5]);
-                Boolean celiac = Boolean.parseBoolean(linea[7]);
-                Producte_Granel productes_granel = new Producte_Granel(nomp, productor, lat, lon, linea[6], preu, celiac, stock);
-                llistaProductes.nouProducte(productes_granel);
-
-            }
-
-        }
-        sc2.close();
-        Scanner sc =new Scanner(new File("C:\\Users\\serret96\\Desktop\\Progra\\practica3\\Progra3\\Progra3\\src\\compres.txt"));
-
-        while(sc.hasNextLine())
-        {
-            linea =sc.nextLine().split(";");
-
-            codi = linea[0];
-            quant = Integer.parseInt(linea[1]);
-            date = new SimpleDateFormat("dd/MM/yyyy").parse(linea[2]);
-            cost = Integer.parseInt(linea[3]);
-            Producte [] producte = llistaProductes.getLlista();
-            Compra c = null;
-            for (int j = 0; j < llistaProductes.getnProductes(); j++) {
-                if (codi.equals(producte[i].getCodi()))
-                {
-                    c = new Compra(codi, quant, date, cost, producte[i]);
-                }
-            }
-
-
-            llistaCompres.nouCompra(c);
-
-            i++;
-        }
-        sc.close();
-
-    }
+    
 
     public static  void EscriureFitxers(LlistaCompres llistaCompres, LlistaProductes llistaProductes) throws FileNotFoundException {
 
-        PrintWriter pw = new PrintWriter(new File("compres.txt"));
+        PrintWriter pw = new PrintWriter(new File("compres3.txt"));
 
         Compra []c = new Compra[llistaCompres.getnCompres()];
         c = llistaCompres.getLlista();
-
         Compra c1;
+        int day;
+        String month;
+        int months;
+        int year;
+        String [] linea;
         for (int i = 0; i < llistaCompres.getnCompres(); i++)
         {
             c1 = c[i];
-            pw.write(c1.getCodip()+";"+c1.getData()+";"+c1.getQuantitat()+";"+c1.getCost()+"\n");
+
+                String aux = c1.getData().toString();
+                linea = aux.split(" ");
+
+                day = Integer.parseInt(linea[2]);
+                month = linea[1];
+                year = Integer.parseInt(linea[5]);
+                months = retornaMonth(month);
+                if (c1.getProducte() instanceof Producte_Unitat)
+                {
+                    pw.write(c1.getCodip()+";"+c1.getQuantitat()+";"+day+"/"+months+"/"+year+";"+c1.getCost()+";"+c1.getProducte().getNom_producte()+
+                            ";"+c1.getProducte().getProductor().getNif()+";"+c1.getProducte().getProductor().getNomproductor()+";"+c1.getProducte().getLat()+
+                            ";"+c1.getProducte().getLon()+";"+((Producte_Unitat) c1.getProducte()).getPreu()+";"+c1.getProducte().getCodi()+";"+c1.getProducte().getStock()+"\n");
+                }
+                else
+                {
+                    pw.write(c1.getCodip()+";"+c1.getQuantitat()+";"+day+"/"+months+"/"+year+";"+c1.getCost()+";"+c1.getProducte().getNom_producte()+
+                            ";"+c1.getProducte().getProductor().getNif()+";"+c1.getProducte().getProductor().getNomproductor()+";"+c1.getProducte().getLat()+
+                            ";"+c1.getProducte().getLon()+";"+((Producte_Granel) c1.getProducte()).getPreu()+
+                            ";"+c1.getProducte().getCodi()+";"+((Producte_Granel) c1.getProducte()).getCeliac()+";"+c1.getProducte().getStock()+"\n");
+                }
+
         }
         pw.close();
 
-        PrintWriter pw2 = new PrintWriter(new File("compres2.txt"));
+        PrintWriter pw2 = new PrintWriter(new File("productes2.txt"));
 
         Producte []p = new Producte[llistaProductes.getnProductes()];
         p = llistaProductes.getLlista();
@@ -132,15 +145,15 @@ public class Main {
         for (int i = 0; i < llistaProductes.getnProductes(); i++)
         {
             p1 = p[i];
-            String [] linea;
+
             linea = p1.getCodi().split("_");
-            if (linea[0].equals("UT"))
+            if (p1 instanceof Producte_Unitat)
             {
                 Producte_Unitat pu = (Producte_Unitat) p1;
                 Productor productor = pu.getProductor();
 
-                pw2.write(pu.getCodi()+";"+productor.getNif()+";"+pu.getNom_producte()+";"+productor.getNomproductor()+
-                        ";"+pu.getLat()+";"+pu.getLon()+";"+pu.getPreu()+";"+pu.getPreukg()+";"+p1.getStock()+"\n");
+                pw2.write(pu.getNom_producte()+";"+productor.getNif()+";"+productor.getNomproductor()+
+                        ";"+pu.getLat()+";"+pu.getLon()+";"+pu.getPreu()+";"+pu.getCodi()+";"+pu.getPreukg()+";"+p1.getStock()+"\n");
 
             }
             else
@@ -148,14 +161,116 @@ public class Main {
                 Producte_Granel pu = (Producte_Granel) p1;
                 Productor productor = pu.getProductor();
 
-                pw2.write(pu.getCodi()+";"+productor.getNif()+";"+pu.getNom_producte()+";"+productor.getNomproductor()+";"+
-                        pu.getLat()+";"+pu.getLon()+";"+pu.getPreu()+";"+pu.getCeliac()+";"+pu.getStockg()+"\n");
+                pw2.write(pu.getNom_producte()+";"+productor.getNif()+";"+productor.getNomproductor()+";"+
+                        pu.getLat()+";"+pu.getLon()+";"+pu.getPreu()+";"+pu.getCodi()+";"+pu.getCeliac()+";"+pu.getStock()+"\n");
             }
 
 
         }
         pw2.close();
     }
+
+    private static int retornaMonth(String month) {
+    int aux = -1;
+	    switch (month)
+        {
+            case "Jan":
+                aux = 1;
+                break;
+            case "Feb":
+                aux = 2;
+                break;
+            case "Mar":
+                aux = 3;
+                break;
+            case "Apr":
+                aux = 4;
+                break;
+            case "May":
+                aux = 5;
+                break;
+            case "Jun":
+                aux = 6;
+                break;
+            case "Jul":
+                aux = 7;
+                break;
+            case "Aug":
+                aux = 8;
+                break;
+            case "Sep":
+                aux = 9;
+                break;
+            case "Oct":
+                aux = 10;
+                break;
+            case "Nov":
+                aux = 11;
+                break;
+            case "Dec":
+                aux = 12;
+                break;
+        }
+        return aux;
+    }
+
+    public static LlistaProductes llegirFitxersProductes() throws FileNotFoundException {
+		LlistaProductes llistaProductes = new LlistaProductes(10);
+		String [] linea = new String[8];
+		Scanner sc2 =new Scanner(new File("productes2.txt"));
+
+		while(sc2.hasNextLine())
+		{
+			linea =sc2.nextLine().split(";");
+			String nomp = linea[0];
+			String nif = linea[1];
+			String nomv = linea[2];
+			double lat = Double.parseDouble(linea[3]);
+			double lon = Double.parseDouble(linea[4]);
+			//codi = linea[5];
+
+			Productor productor = new Productor(nif, nomv);
+			Productor [] llistaPro =llistaProductors.getLlistap();
+            boolean control = false;
+			if (llistaPro == null)
+            {
+                llistaProductors.nouElement(productor);
+            }
+			else
+            {
+                control =llistaProductors.Existeix(productor);
+                if (!control)
+                {
+                    llistaProductors.nouElement(productor);
+                }
+            }
+			String [] linea2 = new String[3];
+			linea2 = linea[6].split("_");
+			if (linea2[0].equals("UT"))
+			{
+				int preu = Integer.parseInt(linea[5]);
+				int pes = Integer.parseInt(linea[7]);
+				float stock = Float.parseFloat(linea[8]);
+
+				Producte_Unitat productes_unitat = new Producte_Unitat(nomp, productor, lat, lon, linea[6], preu, pes, stock);
+				llistaProductes.nouProducte(productes_unitat);
+			}
+			else
+			{
+				int preu = Integer.parseInt(linea[5]);
+				Boolean celiac = Boolean.parseBoolean(linea[7]);
+				float stock = Float.parseFloat(linea[8]);
+				Producte_Granel productes_granel = new Producte_Granel(nomp, productor, lat, lon, linea[6], preu, celiac, stock);
+				llistaProductes.nouProducte(productes_granel);
+
+			}
+
+		}
+		sc2.close();
+
+		return llistaProductes;
+
+	}
 
     public static void imprimirLlistaProductes(LlistaProductes llistaProductes)
     {
@@ -209,15 +324,42 @@ public class Main {
         System.out.println("Inserim un nou producte");
         System.out.println("Nom producte: ");
         String nom = sc.nextLine();
-        System.out.println("NIF productor:");
+
+        System.out.println("selecciona un productor amb el seun numero: ");
+        Productor [] llistaProductors2 = llistaProductors.getLlistap();
+
+        for (int i = 0; i < llistaProductors.getnProductors(); i++) {
+            System.out.println(i+1+" "+ llistaProductors2[i].getNomproductor());
+        }
+        System.out.println(llistaProductors.getnProductors()+1 + " genera un uno productor y seleccional per al nou producte");
+
+        int valor = Integer.parseInt(sc.nextLine());
+
+        Productor productor1;
+        if (valor == llistaProductors.getnProductors()+1)
+        {
+            System.out.println("\nNIF productor:");
+            String nif = sc.nextLine();
+            System.out.println("Nom productor:");
+            String productor = sc.nextLine();
+            productor1 = new Productor(nif, productor);
+            llistaProductors.nouElement(productor1);
+        }
+        else
+        {
+            productor1 = llistaProductors2[valor-1];
+        }
+
+        /*System.out.println("NIF productor:");
         String nif = sc.nextLine();
         System.out.println("Nom productor:");
         String productor = sc.nextLine();
+        */
+
         System.out.println("latitud:");
         double lat = sc.nextDouble();
         System.out.println("long:");
         double longi = sc.nextDouble();
-        Productor productor1 = new Productor(nif, productor);
 
         System.out.println("Es tracta de granel o unitat? (1 = granel| 0 = unitat)");
         if (sc.nextInt() == 1)
@@ -264,17 +406,18 @@ public class Main {
         System.out.println("Introdueix el NIF del productor: ");
         Scanner sc = new Scanner(System.in);
         nif = sc.nextLine();
-
         return nif;
     }
 
     public static void main(String[] args) throws FileNotFoundException, ParseException {
 
-
         System.out.println("Les coordenades del client seran per defecte");
-        LlistaCompres llistaCompres = new LlistaCompres(10);
-        LlistaProductes llistaProductes = new LlistaProductes(10);
-        llegirFitxers(llistaCompres, llistaProductes);
+        LlistaCompres llistaCompres = new LlistaCompres(20);
+        LlistaProductes llistaProductes = new LlistaProductes(20);
+        llistaProductes = llegirFitxersProductes();
+        llistaCompres = llegirFitxersCompres();
+
+
         Client client = new Client(0, 0);
 
         Scanner sn = new Scanner(System.in);
@@ -466,13 +609,15 @@ public class Main {
     private static void visualitzarCompres(LlistaCompres llistaCompres) {
         Compra [] llista;
         llista = llistaCompres.getLlista();
-
-        for (int i = 0; i < llista.length; i++) {
+        int i =0;
+        while(llista[i] != null)
+        {
             System.out.println("Compra "+ i);
             System.out.println("Codi: "+ llista[i].getCodip());
             System.out.println("cost: "+ llista[i].getCost());
             System.out.println("Codi: "+ llista[i].getQuantitat());
             System.out.println("Codi: "+ llista[i].getData()+ "\n");
+            i++;
         }
 
     }

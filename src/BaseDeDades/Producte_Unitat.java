@@ -1,5 +1,16 @@
 package BaseDeDades;
 
+/**
+ * Pr�ctica 3 Programaci�
+ *
+ * Ruben Gomez
+ * ruben.gomez@estudiants.urv.cat
+ *
+ * Ruben Serret Montserrat
+ * ruben.serret@estudiants.urv.cat
+ *
+ */
+
 public class Producte_Unitat extends Producte {
 
 	private int preu;
@@ -24,6 +35,10 @@ public class Producte_Unitat extends Producte {
 
 	public int getPreukg() {
 		return preukg;
+	}
+	
+	public String getCodi_car() {
+		return codi_car;
 	}
 
 	public void setPreukg(int preukg) {

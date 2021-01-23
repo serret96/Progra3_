@@ -1,6 +1,16 @@
 package BaseDeDades;
 import java.util.Date;
-import java.text.SimpleDateFormat;
+
+/**
+ * Pràctica 3 Programació
+ *
+ * Ruben Gomez
+ * ruben.gomez@estudiants.urv.cat
+ *
+ * Ruben Serret Montserrat
+ * ruben.serret@estudiants.urv.cat
+ *
+ */
 
 public class Compra {
 	private String codip;
@@ -31,6 +41,10 @@ public class Compra {
 
 	public int getCost() {
 		return cost;
+	}
+	
+	public Producte getProducte() {
+		return productes;
 	}
 
 	public Compra copia() {

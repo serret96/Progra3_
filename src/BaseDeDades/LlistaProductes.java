@@ -1,6 +1,17 @@
 package BaseDeDades;
 import java.util.Arrays;
 
+/**
+ * Pràctica 3 Programació
+ *
+ * Ruben Gomez
+ * ruben.gomez@estudiants.urv.cat
+ *
+ * Ruben Serret Montserrat
+ * ruben.serret@estudiants.urv.cat
+ *
+ */
+
 public class LlistaProductes {
 	private int nProductes;
 	private Producte[] llistap;
@@ -38,14 +49,14 @@ public class LlistaProductes {
 		boolean trobat = false;
 
 		while (i < nProductes && !trobat) {
-			if (llistap[i].getCodi() == (p.getCodi())) {
+			if (llistap[i].getCodi().equals(p.getCodi())) {
 				llistap[i] = p;
 				trobat = true;
 			}
 			i++;
 		}
 
-		if (!trobat && nProductes < llistap.length) {
+		if (!trobat || nProductes < llistap.length) {
 			llistap[nProductes] = p;
 			nProductes++;
 		}
@@ -57,7 +68,6 @@ public class LlistaProductes {
 	 */
 	
 	public void eliminaProducte (String num) {
-		int j = 0;
 		for (int i=0; i<nProductes; i++) {
 			Productor productor = llistap[i].getProductor();
 			if (productor.getNif().equals(num)){

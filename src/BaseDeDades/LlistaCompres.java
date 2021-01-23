@@ -1,8 +1,16 @@
 package BaseDeDades;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
+
+/**
+ * Pràctica 3 Programació
+ *
+ * Ruben Gomez
+ * ruben.gomez@estudiants.urv.cat
+ *
+ * Ruben Serret Montserrat
+ * ruben.serret@estudiants.urv.cat
+ *
+ */
 
 	public class LlistaCompres {
 		private int nCompres;
@@ -37,6 +45,7 @@ import java.util.Date;
 		 * Afegeix una nova compra a la llista
 		 * @param c, compra que volem afegir
 		 */
+		
 		public void nouCompra(Compra c) {       
 			int i = 0;
 			boolean trobat = false;
@@ -54,6 +63,10 @@ import java.util.Date;
 				nCompres++;
 			}
 		}
+		
+		/**
+		 * Acció que ordenar la llista segons la data
+		 */
 		
 		public void ordenarLlista() {
 			int i, j;
